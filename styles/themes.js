@@ -1,5 +1,5 @@
 import React from 'react';
-// import { theme as chakraTheme } from '@chakra-ui/core';
+// import { theme as chakraTheme } from '@chakra-ui/react';
 import { extendTheme } from "@chakra-ui/react"
 
 const theme = extendTheme({

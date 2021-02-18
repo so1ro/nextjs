@@ -13,22 +13,53 @@ import {
     FormControl,
     FormLabel,
     Input,
+    useToast,
 } from "@chakra-ui/react"
 import { useForm } from "react-hook-form";
+import { useAuth } from '@/lib/auth';
+import { mutate } from 'swr'
 
-
-const AddSiteModal = () => {
+const AddSiteModal = ({ children }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const initialRef = useRef()
-    const finalRef = useRef()
+    const toast = useToast()
+    const auth = useAuth()
 
     const { register, handleSubmit } = useForm();
-    const onCreateSite = data => createSite(data);
+    const onCreateSite = async ({ name, url }) => {
+        const newSite = {
+            authorId: auth.user.uid,
+            createdAt: new Date().toISOString(),
+            name,
+            url
+        };
+
+        // ???? What is this "id"???
+        const { id } = createSite(newSite)
+
+        toast({
+            title: "Success!",
+            description: "We've added your site.",
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+        })
+
+        mutate('/api/sites', async (data) => ({
+            sites: [{ id, ...newSite }, ...data.sites]
+        }),
+            false)
+
+        //  ??? Doesn't it need "Revalidation here???"
+        //  mutate('/api/user')
+
+        onClose()
+    };
 
     return (
         <>
-            <Button onClick={onOpen} fontWeight="medium" maxW="200px" variant="solid" size="md"> Add Your First Site. </Button>
+            <Button onClick={onOpen} colorScheme="teal" variant="solid">{children}</Button>
             <Modal
                 initialFocusRef={initialRef}
                 isOpen={isOpen}
@@ -41,7 +72,7 @@ const AddSiteModal = () => {
                     <ModalBody pb={6}>
                         <FormControl>
                             <FormLabel>name</FormLabel>
-                            <Input ref={initialRef} placeholder="My site" name="site" ref={register({ required: true })} />
+                            <Input placeholder="My site" name="name" ref={register({ required: true })} />
                         </FormControl>
 
                         <FormControl mt={4}>
