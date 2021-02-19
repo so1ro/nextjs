@@ -1,12 +1,23 @@
-import '../styles/globals.css'
-import { ProvideAuth } from '../lib/auth';
+import '@/styles/globals.css'
+import { ChakraProvider } from "@chakra-ui/react"
+import Head from 'next/head'
 
-function MyApp({ Component, pageProps }) {
+import { AuthProvider } from '@/lib/auth';
+import theme from '@/styles/themes';
+
+
+function App({ Component, pageProps }) {
   return (
-    <ProvideAuth>
-      <Component {...pageProps} />
-    </ProvideAuth>
+    <>
+      <Head><meta content="width=device-width, initial-scale=1" name="viewport" /></Head>
+      <ChakraProvider theme={theme}>
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
+      </ChakraProvider>
+    </>
+
   )
 }
 
-export default MyApp
+export default App
