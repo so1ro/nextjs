@@ -46,9 +46,11 @@ const AddSiteModal = ({ children }) => {
             isClosable: true,
         })
 
-        mutate('/api/sites', async (data) => ({
-            sites: [{ id, ...newSite }, ...data.sites]
-        }),
+        mutate(
+            ['/api/sites', auth.user.token],
+            async (data) => ({
+                sites: [{ id, ...newSite }, ...data.sites]
+            }),
             false)
 
         //  ??? Doesn't it need "Revalidation here???"
