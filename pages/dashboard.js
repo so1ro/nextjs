@@ -9,9 +9,8 @@ import SiteTable from '@/components/SiteTable';
 
 
 const Dashboard = () => {
-  const auth = useAuth()
-  const { data } = useSWR('/api/sites', Fetcher)
-  console.log('data:', data)
+  const { user } = useAuth()
+  const { data } = useSWR(user ? ['/api/sites', user.token] : null, Fetcher)
 
   if (!data) return <DashboardShell><SiteTableSkeleton /></DashboardShell>
   return <DashboardShell>{data.sites ? <SiteTable sites={data.sites} /> : <EmptyStage />}</DashboardShell>
