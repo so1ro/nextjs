@@ -6,12 +6,15 @@ const theme = extendTheme({
     styles: {
         global: {
             html: {
-                scrollBehavior: "smooth"
+                scrollBehavior: "smooth",
             },
             "#__next": {
                 display: "flex",
                 flexDirection: "column",
                 minHeight: "100vh",
+            },
+            body: {
+                background: "#edf2f7"
             }
         },
     },
