@@ -37,7 +37,6 @@ const SiteFeedback = ({ initialFeedback }) => {
     const [allFeedback, setAllFeedback] = useState(initialFeedback)
 
     const onSubmit = (e) => {
-        console.log('hello!!!')
         e.preventDefault()
 
         const newFeedback = {
