@@ -35,7 +35,6 @@ const AddSiteModal = ({ children }) => {
             url
         };
 
-        // ???? What is this "id"???
         const { id } = createSite(newSite)
 
         toast({
