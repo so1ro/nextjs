@@ -1,13 +1,27 @@
 import Head from 'next/head'
 import Router from 'next/router';
-import { Stack, Flex, Button, Heading, Text, Code } from "@chakra-ui/react"
+import { Stack, Flex, Button, Box } from "@chakra-ui/react"
 
 import { useAuth } from '@/lib/auth'
+import { getAllFeedback } from '@/lib/db-admin';
 import styles from '@/styles/Home.module.css'
 import { LogoIcon, GitHub, Google } from '@/styles/icons';
 import EmptyStage from '@/components/EmptyStage';
+import Feedback from '@/components/Feedback';
 
-export default function Home() {
+const SITE_ID = '6wwYC6yaoj66Nx8ihqeX'
+
+export const getStaticProps = async (ctx) => {
+  const { feedback } = await getAllFeedback(SITE_ID)
+  return {
+    props: {
+      allFeedback: feedback || []
+    },
+    revalidate: 1
+  }
+}
+
+export default function Home({ allFeedback }) {
   const auth = useAuth()
   return (
     <div className="container">
@@ -50,6 +64,24 @@ export default function Home() {
           </Button>
           </Stack>)
         }
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="full"
+          maxWidth="700px"
+          margin="0 auto"
+          mt={8}
+          px={4}
+        >
+          {allFeedback.map((feedback, index) => (
+            <Feedback
+              key={feedback.id}
+              // settings={site?.settings}
+              isLast={index === allFeedback.length - 1}
+              {...feedback}
+            />
+          ))}
+        </Box>
       </Flex>
     </div >
   )
