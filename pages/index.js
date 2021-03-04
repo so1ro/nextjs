@@ -26,7 +26,6 @@ export default function Home({ allFeedback }) {
   return (
     <div className="container">
       <Head>
-        <title>Fast Feedback</title>
         <script dangerouslySetInnerHTML={{
           __html: `
           if (document.cookie && document.cookie.includes('fast-feedback-auth')) {

@@ -8,7 +8,8 @@ import {
     Heading,
 } from '@chakra-ui/react'
 
-const SiteTableHeader = () => {
+const SiteTableHeader = ({ addIcon }) => {
+    console.log('addIcon:', addIcon)
     return (
         <>
             <Breadcrumb>
@@ -18,7 +19,7 @@ const SiteTableHeader = () => {
             </Breadcrumb>
             <Flex justifyContent="space-between" alignItems="center" mb={4}>
                 <Heading>Site</Heading>
-                <AddSiteModal>+ Add Site</AddSiteModal>
+                {!addIcon && <AddSiteModal>+ Add Site</AddSiteModal>}
             </Flex>
         </>
     );
