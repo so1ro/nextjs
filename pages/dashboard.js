@@ -15,17 +15,15 @@ const Dashboard = () => {
   const { data } = useSWR(user ? ['/api/sites', user.token] : null, Fetcher)
   const isPaidAccount = user?.stripeRole !== 'free'
 
-  if (!data) return (
-    <DashboardShell>
-      <SiteTableHeader />
-      <SiteTableSkeleton />
-    </DashboardShell>)
   return (
     <DashboardShell>
       <SiteTableHeader addIcon={!data.sites.length} />
-      {data.sites.length ?
+      {!data &&
+        <SiteTableSkeleton />}
+      {data?.sites.length ?
         <SiteTable sites={data.sites} /> :
-        (isPaidAccount ? <SiteEmptyState /> : <UpgradeEmptyState />)}
+        (isPaidAccount ? <SiteEmptyState /> : <UpgradeEmptyState />)
+      }
     </DashboardShell>
   )
 }
