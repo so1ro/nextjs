@@ -1,12 +1,15 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { Button, Box, FormControl, FormLabel, Input, FormHelperText } from '@chakra-ui/react';
+import useSWR, { mutate } from 'swr'
 
 import Feedback from '@/components/Feedback';
 import { useAuth } from '@/lib/auth';
 import { getAllFeedback, getAllSites } from "@/lib/db-admin";
 import { createFeedback } from '@/lib/db';
-
+import DashboardShell from '@/components/DashboardShell';
+import SiteHeader from '@/components/SiteHeader';
+import Fetcher from '@/utils/fetcher';
 
 export async function getStaticProps(context) {
     const siteId = context.params.siteId
@@ -36,6 +39,9 @@ const SiteFeedback = ({ initialFeedback }) => {
     const router = useRouter()
     const [allFeedback, setAllFeedback] = useState(initialFeedback)
 
+    const siteId = router.query.siteId
+    const { data: siteData } = useSWR(`/api/site/${siteId}`, Fetcher);
+
     const onSubmit = (e) => {
         e.preventDefault()
 
@@ -54,30 +60,33 @@ const SiteFeedback = ({ initialFeedback }) => {
     }
 
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
-            width="full"
-            maxWidth="700px"
-            margin="0 auto" >
-            <Box as="form" onSubmit={onSubmit}>
-                <FormControl id="comment" my={8}>
-                    <FormLabel>Comment</FormLabel>
-                    <Input ref={inputEl} type="comment" />
-                    <Button
-                        mt={2}
-                        type="submit"
-                        fontWeight="medium"
-                        isDisabled={router.isFallback}>
-                        Add comment
+        <DashboardShell>
+            <SiteHeader isSiteOwner={true} site={siteData?.site} siteId={siteId} />
+            <Box
+                display="flex"
+                flexDirection="column"
+                width="full"
+                maxWidth="700px"
+                margin="0 auto" >
+                <Box as="form" onSubmit={onSubmit}>
+                    <FormControl id="comment" my={8}>
+                        <FormLabel>Comment</FormLabel>
+                        <Input ref={inputEl} type="comment" />
+                        <Button
+                            mt={2}
+                            type="submit"
+                            fontWeight="medium"
+                            isDisabled={router.isFallback}>
+                            Add comment
                     </Button>
-                    <FormHelperText>Please leave your comment.</FormHelperText>
-                </FormControl>
+                        <FormHelperText>Please leave your comment.</FormHelperText>
+                    </FormControl>
+                </Box>
+                {allFeedback && allFeedback.map(feedback => (
+                    <Feedback key={feedback.id} {...feedback} />
+                ))}
             </Box>
-            {allFeedback && allFeedback.map(feedback => (
-                <Feedback key={feedback.id} {...feedback} />
-            ))}
-        </Box>
+        </DashboardShell>
     )
 };
 

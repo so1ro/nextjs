@@ -10,7 +10,7 @@ import Page from '@/components/Page';
 import SiteEmptyState from '@/components/SiteEmptyState';
 import UpgradeEmptyState from '@/components/UpgradeEmptyState';
 
-const Dashboard = () => {
+const Sites = () => {
   const { user } = useAuth()
   const { data } = useSWR(user ? ['/api/sites', user.token] : null, Fetcher)
   const isPaidAccount = user?.stripeRole !== 'free'
@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   return (
     <DashboardShell>
-      <SiteTableHeader addIcon={!data.sites.length} />
+      <SiteTableHeader addIcon={!data?.sites.length} />
       {data.sites.length ? // user saved Sites? 
         <SiteTable sites={data.sites} /> :
         (isPaidAccount ?  // user has Paid account? 
@@ -35,7 +35,7 @@ const Dashboard = () => {
 const DashboardPage = () => {
   return (
     <Page name="Dashboard" path="/sites" >
-      <Dashboard />
+      <Sites />
     </Page>
   );
 };
