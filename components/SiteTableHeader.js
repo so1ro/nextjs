@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react'
 
 const SiteTableHeader = ({ addIcon }) => {
-    console.log('addIcon:', addIcon)
     return (
         <>
             <Breadcrumb>

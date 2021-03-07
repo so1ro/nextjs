@@ -29,14 +29,14 @@ export default function Home({ allFeedback }) {
         <script dangerouslySetInnerHTML={{
           __html: `
           if (document.cookie && document.cookie.includes('fast-feedback-auth')) {
-            window.location.href = "/dashboard"
+            window.location.href = "/sites"
           }
         ` }} />
       </Head>
       <Flex direction="column" h="100vh" as="main" className={styles.main}>
         <LogoIcon boxSize={24} />
         {auth.user ?
-          (<Button mt={4} onClick={(e) => Router.push('/dashboard')}> Dashboard</Button>) :
+          (<Button mt={4} onClick={(e) => Router.push('/sites')}> Dashboard</Button>) :
           (<Stack>
             <Button
               alignItems="center"

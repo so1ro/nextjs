@@ -22,6 +22,7 @@ const RemoveButton = ({ feedbackId }) => {
     const onDelete = () => {
         deleteFeedback(feedbackId)
         mutate(
+            // Can't remove
             ['/api/feedback', auth.user.token],
             async (data) => {
                 return { feedback: data.feedback.filter(feedback => feedback.id !== feedbackId) }
@@ -43,19 +44,19 @@ const RemoveButton = ({ feedbackId }) => {
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             Delete feedback
-              </AlertDialogHeader>
+                        </AlertDialogHeader>
 
                         <AlertDialogBody>
                             Are you sure? You can't undo this action afterwards.
-              </AlertDialogBody>
+                        </AlertDialogBody>
 
                         <AlertDialogFooter>
                             <Button ref={cancelRef} onClick={onClose}>
                                 Cancel
-                </Button>
+                            </Button>
                             <Button colorScheme="red" onClick={onDelete} ml={3}>
                                 Delete
-                </Button>
+                            </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
