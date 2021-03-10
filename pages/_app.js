@@ -7,16 +7,20 @@ import theme from '@/styles/themes';
 
 import SEO from '../next-seo.config';
 import { DefaultSeo } from 'next-seo';
+import { MDXProvider } from "@mdx-js/react"
+import MDXComponents from '@/components/MDXComponents';
 
 function App({ Component, pageProps }) {
   return (
     <>
       <Head><meta content="width=device-width, initial-scale=1" name="viewport" /></Head>
       <ChakraProvider theme={theme}>
-        <AuthProvider>
-          <DefaultSeo {...SEO} />
-          <Component {...pageProps} />
-        </AuthProvider>
+        <MDXProvider components={MDXComponents}>
+          <AuthProvider>
+            <DefaultSeo {...SEO} />
+            <Component {...pageProps} />
+          </AuthProvider>
+        </MDXProvider>
       </ChakraProvider>
     </>
 

@@ -10,12 +10,16 @@ import {
     Avatar,
 } from '@chakra-ui/react'
 import NextLink from 'next/link';
+import { useColorMode, useColorModeValue } from "@chakra-ui/react"
 
 const DashboardShell = ({ children }) => {
     const { user, signinWithGithub, signout } = useAuth()
+    const { colorMode, toggleColorMode } = useColorMode()
+    const bg = useColorModeValue("white", "gray.800")
+    const bg_Content = useColorModeValue("white", "gray.900")
 
     return (
-        <Flex flexDirection="column">
+        <Flex flexDirection="column" bgColor={bg_Content}>
             <Flex
                 backgroundColor="white"
                 justifyContent="space-between"
@@ -23,6 +27,7 @@ const DashboardShell = ({ children }) => {
                 // p={4}
                 px={8}
                 py={4}
+                bgColor={bg}
             >
                 <Stack spacing={4} isInline alignItems="center">
                     <NextLink href="/" passHref>
@@ -36,6 +41,9 @@ const DashboardShell = ({ children }) => {
                     </NextLink>
                 </Stack>
                 <Flex alignItems="center">
+                    <Button onClick={toggleColorMode}>
+                        Toggle {colorMode === "light" ? "Dark" : "Light"}
+                    </Button>
                     {/* <Link mr={4}>Account</Link> */}
                     {!!user ?
                         <Button variant="ghost" mr={2} onClick={() => signout()}>Sign out</Button> :

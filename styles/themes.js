@@ -3,8 +3,10 @@ import React from 'react';
 import { extendTheme } from "@chakra-ui/react"
 
 const theme = extendTheme({
+    initialColorMode: "light",
+    useSystemColorMode: false,
     styles: {
-        global: {
+        global: (props) => ({
             html: {
                 scrollBehavior: "smooth",
             },
@@ -14,9 +16,10 @@ const theme = extendTheme({
                 minHeight: "100vh",
             },
             body: {
-                background: "#edf2f7"
+                background: "#edf2f7",
+                color: props.colorMode === "dark" ? "white" : "gray.600",
             }
-        },
+        }),
     },
     fonts: {
         body: `Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`
